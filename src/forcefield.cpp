@@ -3010,7 +3010,7 @@ namespace OpenBabel
     _BFGS_invHysT.resize(_ncoords * _ncoords, 0.);
     _BFGS_syT.resize(_ncoords * _ncoords, 0.);
     _BFGS_syTInvH.resize(_ncoords * _ncoords, 0.);
-    _BFGS_matrix1.resize(_ncoords * _ncoords, 0.);
+    _BFGS_matrix1.resize(_ncoords * _ncoords, 1.);
     _BFGS_matrix2.resize(_ncoords * _ncoords, 0.);
 
     // Initialize inverse Hessian as unit matrix
@@ -3222,10 +3222,11 @@ namespace OpenBabel
     }
     for (int row=0; row<_ncoords; row++) {
       double x=0.0;
-      for (int col=0; col<_ncoords; col++)
-        x += _BFGS_syT[row * _ncoords + col] * _BFGS_invH[row + col * _ncoords];
-      // FIXME: "col" is not defined here. Double check the math here.
-//      _BFGS_syTInvH[row * _ncoords + col] = x;
+      for (int shift=0; shift<_ncoords; shift++) {
+        for (int col=0; col<_ncoords; col++)
+          x += _BFGS_syT[row * _ncoords + col] * _BFGS_invH[row + col * _ncoords + shift];
+        _BFGS_syTInvH[shift + row * _ncoords] = x;
+      }
     }
 
     double a, b, frac1;
