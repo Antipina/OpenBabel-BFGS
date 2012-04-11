@@ -3106,7 +3106,7 @@ namespace OpenBabel
     }
     memcpy(_grad1, _gradientPtr, sizeof(double)*_ncoords);
 
-    _e_n1 = e_n2;
+    _e_n1 = Energy() + _constraints.GetConstraintEnergy();
   }
 
   bool OBForceField::BFGSTakeNSteps(int n)

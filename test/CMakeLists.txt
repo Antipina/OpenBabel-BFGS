@@ -84,6 +84,7 @@ set(old_tests
     datatest
     ffgaff
     ffghemical
+    ffmintest
     ffmmff94
     ffuff
     formalcharge
